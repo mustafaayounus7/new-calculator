@@ -6,6 +6,20 @@ const fmt = (n) => {
   return (n < 0 ? '-$' : '$') + Math.abs(Math.round(n)).toLocaleString();
 };
 
+// Chart instances
+let charts = {
+  cashGrowth: null,
+  debtPaydown: null
+};
+
+// Calculate future value with compound interest (similar to simulateBuckets but simpler)
+function calculateFutureValue(monthlyContribution, annualRate, months) {
+  if (months === 0 || monthlyContribution === 0) return 0;
+  const monthlyRate = annualRate / 100 / 12;
+  if (monthlyRate === 0) return monthlyContribution * months;
+  return monthlyContribution * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
+}
+
 function pmt(r, n, p) {
   if (n === 0) return NaN;
   if (r === 0) return -(p / n);
@@ -208,7 +222,254 @@ function calc() {
   document.getElementById('investmentGrowthBreakdown').textContent = 'Investing: ' + fmt(bucketsAtPayoff.invest) + ' • Savings: ' + fmt(bucketsAtPayoff.savings);
 
   document.getElementById('totalImpact').textContent = fmt(totalImpact);
+
+  // Update charts
+  updateCharts({
+    cf,
+    epMonthly,
+    invMonthly,
+    emMonthly,
+    savMonthly,
+    invReturn,
+    savReturn,
+    payoffMonths,
+    base,
+    refi,
+    loanAmount,
+    totalDebt,
+    currentAPR,
+    currentPayment,
+    newAPR,
+    newTermYears
+  });
 }
 
-document.querySelectorAll('input').forEach(el => el.addEventListener('input', calc));
-calc();
+// Initialize charts
+function initializeCharts() {
+  const cashGrowthCanvas = document.getElementById('cashGrowthChart');
+  const debtPaydownCanvas = document.getElementById('debtPaydownChart');
+  
+  if (!cashGrowthCanvas || !debtPaydownCanvas) {
+    console.error('Chart canvas elements not found');
+    return;
+  }
+  
+  // Destroy existing chart instances
+  if (typeof Chart !== 'undefined') {
+    if (Chart.getChart(cashGrowthCanvas)) {
+      Chart.getChart(cashGrowthCanvas).destroy();
+    }
+    if (Chart.getChart(debtPaydownCanvas)) {
+      Chart.getChart(debtPaydownCanvas).destroy();
+    }
+
+    // Cash Growth Over Time Chart
+    const cashGrowthCtx = cashGrowthCanvas.getContext('2d');
+    charts.cashGrowth = new Chart(cashGrowthCtx, {
+      type: 'bar',
+      data: {
+        labels: ['3 Mo', '6 Mo', '1 Yr', '2 Yr', '3 Yr', '4 Yr', '5 Yr'],
+        datasets: [
+          {
+            label: 'Emergency Fund',
+            data: [0, 0, 0, 0, 0, 0, 0],
+            backgroundColor: '#cb746b',
+          },
+          {
+            label: 'Investing/Retirement',
+            data: [0, 0, 0, 0, 0, 0, 0],
+            backgroundColor: '#f8c4b7',
+          },
+          {
+            label: 'Savings',
+            data: [0, 0, 0, 0, 0, 0, 0],
+            backgroundColor: '#8b3534',
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'bottom',
+          },
+        },
+        scales: {
+          x: {
+            stacked: true,
+          },
+          y: {
+            stacked: true,
+            beginAtZero: true,
+            ticks: {
+              callback: function (value) {
+                return '$' + value.toLocaleString();
+              }
+            }
+          }
+        }
+      }
+    });
+
+    // Debt Paydown Comparison Chart
+    const debtPaydownCtx = debtPaydownCanvas.getContext('2d');
+    charts.debtPaydown = new Chart(debtPaydownCtx, {
+      type: 'bar',
+      data: {
+        labels: ['0', '1 Yr', '2 Yr', '3 Yr', '4 Yr', '5 Yr'],
+        datasets: [
+          {
+            label: 'Credit Card Debt',
+            data: [0, 0, 0, 0, 0, 0],
+            backgroundColor: '#8b3534',
+            barThickness: 10,
+          },
+          {
+            label: 'New Loan',
+            data: [0, 0, 0, 0, 0, 0],
+            backgroundColor: '#cb746b',
+            barThickness: 10,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'bottom',
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: function (value) {
+                return '$' + value.toLocaleString();
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+}
+
+// Update charts with calculated data
+function updateCharts(data) {
+  if (!charts.cashGrowth || !charts.debtPaydown) return;
+
+  // Cash Growth Over Time Chart
+  const cashGrowthLabels = ['3 Mo', '6 Mo', '1 Yr', '2 Yr', '3 Yr', '4 Yr', '5 Yr'];
+  const cashGrowthMonths = [3, 6, 12, 24, 36, 48, 60];
+  
+  const emergencyData = cashGrowthMonths.map(months => {
+    const maxMonths = data.payoffMonths > 0 
+      ? Math.min(months, data.payoffMonths) 
+      : months;
+    return calculateFutureValue(data.emMonthly, data.savReturn, maxMonths);
+  });
+
+  const investingData = cashGrowthMonths.map(months => {
+    const maxMonths = data.payoffMonths > 0 
+      ? Math.min(months, data.payoffMonths) 
+      : months;
+    return calculateFutureValue(data.invMonthly, data.invReturn, maxMonths);
+  });
+
+  const savingsData = cashGrowthMonths.map(months => {
+    const maxMonths = data.payoffMonths > 0 
+      ? Math.min(months, data.payoffMonths) 
+      : months;
+    return calculateFutureValue(data.savMonthly, data.savReturn, maxMonths);
+  });
+
+  charts.cashGrowth.data.datasets[0].data = emergencyData;
+  charts.cashGrowth.data.datasets[1].data = investingData;
+  charts.cashGrowth.data.datasets[2].data = savingsData;
+  charts.cashGrowth.update('none');
+
+  // Debt Paydown Comparison Chart
+  const maxYears = Math.max(
+    Math.ceil((isFinite(data.base.months) ? data.base.months : 0) / 12), 
+    Math.ceil(data.payoffMonths / 12),
+    5
+  ) + 1;
+  
+  const debtPaydownLabels = [];
+  const ccDebtData = [];
+  const newLoanData = [];
+
+  // Calculate debt paydown over time for credit card (using minimum payments)
+  const ccMonthlyRate = data.currentAPR / 100 / 12;
+  let ccRemaining = data.totalDebt;
+
+  // Calculate debt paydown over time for consolidation loan
+  const loanMonthlyRate = data.newAPR / 100 / 12;
+  const loanMonthlyPayment = (data.newTermYears > 0) ? -pmt(loanMonthlyRate, data.newTermYears * 12, data.loanAmount) : 0;
+  const loanExtraPrincipal = data.epMonthly;
+  let loanRemaining = data.loanAmount;
+
+  for (let year = 0; year <= Math.min(maxYears, 5); year++) {
+    debtPaydownLabels.push(year === 0 ? '0' : `${year} Yr`);
+    
+    if (year === 0) {
+      ccDebtData.push(data.totalDebt);
+      newLoanData.push(data.loanAmount);
+    } else {
+      // Calculate credit card balance at this year (using minimum 2.5% payment)
+      for (let month = 0; month < 12 && ccRemaining > 0.01; month++) {
+        const minPay = Math.max(ccRemaining * 0.025, 25);
+        const interest = ccRemaining * ccMonthlyRate;
+        const principal = Math.min(minPay - interest, ccRemaining);
+        if (principal > 0) {
+          ccRemaining -= principal;
+        } else {
+          break;
+        }
+      }
+      ccDebtData.push(Math.max(0, ccRemaining));
+
+      // Calculate consolidation loan balance at this year
+      for (let month = 0; month < 12 && loanRemaining > 0.01; month++) {
+        const interest = loanRemaining * loanMonthlyRate;
+        const principal = Math.min(loanMonthlyPayment + loanExtraPrincipal - interest, loanRemaining);
+        if (principal > 0) {
+          loanRemaining -= principal;
+        } else {
+          break;
+        }
+      }
+      newLoanData.push(Math.max(0, loanRemaining));
+    }
+  }
+
+  // Update chart data
+  charts.debtPaydown.data.labels = debtPaydownLabels;
+  charts.debtPaydown.data.datasets[0].data = ccDebtData;
+  charts.debtPaydown.data.datasets[1].data = newLoanData;
+  charts.debtPaydown.update('none');
+}
+
+// Initialize when DOM and Chart.js are ready
+function initApp() {
+  // Wait a bit for Chart.js to load if it's from CDN
+  if (typeof Chart !== 'undefined') {
+    initializeCharts();
+    document.querySelectorAll('input').forEach(el => el.addEventListener('input', calc));
+    calc();
+  } else {
+    // Retry if Chart.js not loaded yet
+    setTimeout(initApp, 100);
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  // DOM already loaded
+  initApp();
+}
