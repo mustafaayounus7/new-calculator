@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Financial Freedom Calculator (Local)</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <div class="title">THE FINANCIAL FREEDOM CALCULATOR</div>
+      <div class="subtitle">Local-only build • full UI</div>
+    </div>
+
+    <div class="cols">
+      <div class="left">
+        <div class="card">
+          <h3>YOUR CURRENT DEBT</h3>
+          <label>Total Credit Card Balance
+            <input id="totalDebt" type="number" value="50000">
+          </label>
+          <label>Current Average APR (%)
+            <input id="currentAPR" type="number" value="24">
+          </label>
+          <label>Current Total Monthly Payment ($)
+            <input id="currentPayment" type="number" value="1500">
+          </label>
+        </div>
+
+        <div class="card">
+          <h3>ADDITIONAL CASH FLOW</h3>
+          <label>Add Fixed Dollar Amount ($)
+            <input id="additionalCashFlow" type="number" value="50">
+          </label>
+          <label>Add % to Freed Cash Flow
+            <input id="additionalCashFlowPct" type="number" value="3">
+          </label>
+        </div>
+
+        <div class="card">
+          <h3>NEW CONSOLIDATION LOAN</h3>
+          <label>New Loan APR (%)
+            <input id="newAPR" type="number" value="12">
+          </label>
+          <label>New Loan Term (Years)
+            <input id="newTerm" type="number" value="5">
+          </label>
+          <label>One-time Program/Refinancing Costs ($)
+            <input id="refiCosts" type="number" value="5000">
+          </label>
+        </div>
+
+        <div class="card">
+          <h3>WHAT TO DO WITH FREED CASH?</h3>
+          <label>Extra Principal (%)
+            <input id="extraPrincipal" type="number" value="25">
+          </label>
+          <label>Investing (%)
+            <input id="investing" type="number" value="25">
+          </label>
+          <label>Emergency Fund (%)
+            <input id="emergencyFund" type="number" value="25">
+          </label>
+          <label>Savings Buckets (%)
+            <input id="savingsBuckets" type="number" value="25">
+          </label>
+          <div class="hint">Total should be 100% (logic auto-scales if not).</div>
+          <label>Investment Annual Return (%)
+            <input id="investmentReturn" type="number" value="7">
+          </label>
+          <label>Savings Annual Return (%)
+            <input id="savingsReturn" type="number" value="4">
+          </label>
+        </div>
+      </div>
+
+      <div class="right">
+        <div class="card hero">
+          <div class="kicker">MONTHLY CASH FLOW FREED</div>
+          <div class="big" id="cashFlowAmount">$0</div>
+          <div class="small">per month</div>
+        </div>
+
+        <div class="card">
+          <h3>HOW YOUR FREED CASH FLOW IS WORKING</h3>
+          <div class="mini-grid">
+            <div class="mini">
+              <div class="mini-title">Extra Principal</div>
+              <div class="mini-val" id="monthlyExtraPrincipal">$0</div>
+            </div>
+            <div class="mini">
+              <div class="mini-title">Investing</div>
+              <div class="mini-val" id="monthlyInvesting">$0</div>
+            </div>
+            <div class="mini">
+              <div class="mini-title">Emergency</div>
+              <div class="mini-val" id="monthlyEmergency">$0</div>
+            </div>
+            <div class="mini">
+              <div class="mini-title">Savings</div>
+              <div class="mini-val" id="monthlySavings">$0</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>FINANCIAL IMPACT OVER TIME</h3>
+          <div class="impact-grid">
+            <div class="impact"><div class="impact-title">90 Days</div><div class="impact-val" id="impact90days">$0</div></div>
+            <div class="impact"><div class="impact-title">6 Months</div><div class="impact-val" id="impact6months">$0</div></div>
+            <div class="impact"><div class="impact-title">1 Year</div><div class="impact-val" id="impact1year">$0</div></div>
+            <div class="impact"><div class="impact-title">3 Years</div><div class="impact-val" id="impact3years">$0</div></div>
+            <div class="impact"><div class="impact-title">5 Years</div><div class="impact-val" id="impact5years">$0</div></div>
+          </div>
+
+          <h4 class="mt">WHERE YOUR MONEY GOES</h4>
+          <div class="tablewrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>6 Mo</th>
+                  <th>1 Yr</th>
+                  <th>3 Yr</th>
+                  <th>5 Yr</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Extra Principal</td><td id="principal6mo">$0</td><td id="principal1yr">$0</td><td id="principal3yr">$0</td><td id="principal5yr">$0</td></tr>
+                <tr><td>Investing</td><td id="investing6mo">$0</td><td id="investing1yr">$0</td><td id="investing3yr">$0</td><td id="investing5yr">$0</td></tr>
+                <tr><td>Emergency</td><td id="emergency6mo">$0</td><td id="emergency1yr">$0</td><td id="emergency3yr">$0</td><td id="emergency5yr">$0</td></tr>
+                <tr><td>Savings</td><td id="savings6mo">$0</td><td id="savings1yr">$0</td><td id="savings3yr">$0</td><td id="savings5yr">$0</td></tr>
+                <tr class="hl"><td>Interest Saved</td><td id="interestSaved6mo">$0</td><td id="interestSaved1yr">$0</td><td id="interestSaved3yr">$0</td><td id="interestSaved5yr">$0</td></tr>
+                <tr class="total"><td>Total Impact</td><td id="totalFreed6mo">$0</td><td id="totalFreed1yr">$0</td><td id="totalFreed3yr">$0</td><td id="totalFreed5yr">$0</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="debtfree">
+            <div class="debtfree-k">Debt-free in</div>
+            <div class="debtfree-v" id="debtFreeDate">—</div>
+            <div class="debtfree-s">(<span id="monthsToPayoff">0.0</span> years)</div>
+          </div>
+
+          <div class="benefits">
+            <div class="bcard"><div class="btitle">INTEREST SAVED</div><div class="bval" id="interestSaved">$0</div></div>
+            <div class="bcard"><div class="btitle">TIME SAVED</div><div class="bval" id="timeSaved">0.0 years</div></div>
+            <div class="bcard"><div class="btitle">ACCOUNT GROWTH</div><div class="bval" id="investmentGrowth">$0</div><div class="bsub" id="investmentGrowthBreakdown">Investing: $0 • Savings: $0</div></div>
+            <div class="bcard"><div class="btitle">TOTAL IMPACT</div><div class="bval" id="totalImpact">$0</div></div>
+          </div>
+
+          <div class="footer-note">Local-only build. No network calls.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
