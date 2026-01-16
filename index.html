@@ -8,115 +8,153 @@
 </head>
 <body>
   <div class="container">
-    <div class="topbar">
-      <div class="title">THE FINANCIAL FREEDOM CALCULATOR</div>
-      <div class="subtitle">Local-only build • full UI</div>
+    <div class="header">
+      <div class="header-content">
+        <h1>THE FINANCIAL FREEDOM CALCULATOR</h1>
+        <p>Local-only build • full UI</p>
+      </div>
     </div>
 
-    <div class="cols">
-      <div class="left">
-        <div class="card">
-          <h3>YOUR CURRENT DEBT</h3>
-          <label>Total Credit Card Balance
+    <div class="main-content">
+    <div class="calculator-section">
+      <div class="input-panel">
+        <div class="form-section">
+          <div class="section-title">YOUR CURRENT DEBT</div>
+          <div class="form-group">
+            <label>Total Credit Card Balance</label>
             <input id="totalDebt" type="number" value="50000">
-          </label>
-          <label>Current Average APR (%)
+          </div>
+          <div class="form-group">
+            <label>Current Average APR (%)</label>
             <input id="currentAPR" type="number" value="24">
-          </label>
-          <label>Current Total Monthly Payment ($)
+          </div>
+          <div class="form-group">
+            <label>Current Total Monthly Payment ($)</label>
             <input id="currentPayment" type="number" value="1500">
-          </label>
+          </div>
         </div>
 
-        <div class="card">
-          <h3>ADDITIONAL CASH FLOW</h3>
-          <label>Add Fixed Dollar Amount ($)
+        <div class="form-section">
+          <div class="section-title">ADDITIONAL CASH FLOW</div>
+          <div class="form-group">
+            <label>Add Fixed Dollar Amount ($)</label>
             <input id="additionalCashFlow" type="number" value="50">
-          </label>
-          <label>Add % to Freed Cash Flow
+          </div>
+          <div class="form-group">
+            <label>Add % to Freed Cash Flow</label>
             <input id="additionalCashFlowPct" type="number" value="3">
-          </label>
+          </div>
         </div>
 
-        <div class="card">
-          <h3>NEW CONSOLIDATION LOAN</h3>
-          <label>New Loan APR (%)
+        <div class="form-section">
+          <div class="section-title">NEW CONSOLIDATION LOAN</div>
+          <div class="form-group">
+            <label>New Loan APR (%)</label>
             <input id="newAPR" type="number" value="12">
-          </label>
-          <label>New Loan Term (Years)
+          </div>
+          <div class="form-group">
+            <label>New Loan Term (Years)</label>
             <input id="newTerm" type="number" value="5">
-          </label>
-          <label>One-time Program/Refinancing Costs ($)
+          </div>
+          <div class="form-group">
+            <label>One-time Program/Refinancing Costs ($)</label>
             <input id="refiCosts" type="number" value="5000">
-          </label>
+          </div>
         </div>
 
-        <div class="card">
-          <h3>WHAT TO DO WITH FREED CASH?</h3>
-          <label>Extra Principal (%)
-            <input id="extraPrincipal" type="number" value="25">
-          </label>
-          <label>Investing (%)
-            <input id="investing" type="number" value="25">
-          </label>
-          <label>Emergency Fund (%)
-            <input id="emergencyFund" type="number" value="25">
-          </label>
-          <label>Savings Buckets (%)
-            <input id="savingsBuckets" type="number" value="25">
-          </label>
-          <div class="hint">Total should be 100% (logic auto-scales if not).</div>
-          <label>Investment Annual Return (%)
+        <div class="form-section">
+          <div class="section-title">WHAT TO DO WITH FREED CASH?</div>
+          <div class="allocation-inputs">
+            <div class="form-group">
+              <label>Extra Principal (%)</label>
+              <input id="extraPrincipal" type="number" value="25">
+            </div>
+            <div class="form-group">
+              <label>Investing (%)</label>
+              <input id="investing" type="number" value="25">
+            </div>
+            <div class="form-group">
+              <label>Emergency Fund (%)</label>
+              <input id="emergencyFund" type="number" value="25">
+            </div>
+            <div class="form-group">
+              <label>Savings Buckets (%)</label>
+              <input id="savingsBuckets" type="number" value="25">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Total should be 100% (logic auto-scales if not).</label>
+          </div>
+          <div class="form-group">
+            <label>Investment Annual Return (%)</label>
             <input id="investmentReturn" type="number" value="7">
-          </label>
-          <label>Savings Annual Return (%)
+          </div>
+          <div class="form-group">
+            <label>Savings Annual Return (%)</label>
             <input id="savingsReturn" type="number" value="4">
-          </label>
+          </div>
         </div>
       </div>
 
-      <div class="right">
-        <div class="card hero">
-          <div class="kicker">MONTHLY CASH FLOW FREED</div>
-          <div class="big" id="cashFlowAmount">$0</div>
-          <div class="small">per month</div>
+      <div class="results-panel">
+        <div class="result-card large">
+          <div class="result-label">MONTHLY CASH FLOW FREED</div>
+          <div class="result-value" id="cashFlowAmount">$0</div>
+          <div class="result-unit">per month</div>
         </div>
 
-        <div class="card">
+        <div class="result-card">
           <h3>HOW YOUR FREED CASH FLOW IS WORKING</h3>
-          <div class="mini-grid">
-            <div class="mini">
-              <div class="mini-title">Extra Principal</div>
-              <div class="mini-val" id="monthlyExtraPrincipal">$0</div>
+          <div class="breakdown-grid">
+            <div class="breakdown-item">
+              <div class="breakdown-label">Extra Principal</div>
+              <div class="breakdown-value" id="monthlyExtraPrincipal">$0</div>
             </div>
-            <div class="mini">
-              <div class="mini-title">Investing</div>
-              <div class="mini-val" id="monthlyInvesting">$0</div>
+            <div class="breakdown-item">
+              <div class="breakdown-label">Investing</div>
+              <div class="breakdown-value" id="monthlyInvesting">$0</div>
             </div>
-            <div class="mini">
-              <div class="mini-title">Emergency</div>
-              <div class="mini-val" id="monthlyEmergency">$0</div>
+            <div class="breakdown-item">
+              <div class="breakdown-label">Emergency</div>
+              <div class="breakdown-value" id="monthlyEmergency">$0</div>
             </div>
-            <div class="mini">
-              <div class="mini-title">Savings</div>
-              <div class="mini-val" id="monthlySavings">$0</div>
+            <div class="breakdown-item">
+              <div class="breakdown-label">Savings</div>
+              <div class="breakdown-value" id="monthlySavings">$0</div>
             </div>
           </div>
         </div>
 
-        <div class="card">
-          <h3>FINANCIAL IMPACT OVER TIME</h3>
-          <div class="impact-grid">
-            <div class="impact"><div class="impact-title">90 Days</div><div class="impact-val" id="impact90days">$0</div></div>
-            <div class="impact"><div class="impact-title">6 Months</div><div class="impact-val" id="impact6months">$0</div></div>
-            <div class="impact"><div class="impact-title">1 Year</div><div class="impact-val" id="impact1year">$0</div></div>
-            <div class="impact"><div class="impact-title">3 Years</div><div class="impact-val" id="impact3years">$0</div></div>
-            <div class="impact"><div class="impact-title">5 Years</div><div class="impact-val" id="impact5years">$0</div></div>
+        <div class="result-card">
+          <div class="impact-section">
+            <h3>FINANCIAL IMPACT OVER TIME</h3>
+            <div class="impact-grid">
+              <div class="impact-item">
+                <div class="impact-timeframe">90 Days</div>
+                <div class="impact-amount" id="impact90days">$0</div>
+              </div>
+              <div class="impact-item">
+                <div class="impact-timeframe">6 Months</div>
+                <div class="impact-amount" id="impact6months">$0</div>
+              </div>
+              <div class="impact-item">
+                <div class="impact-timeframe">1 Year</div>
+                <div class="impact-amount" id="impact1year">$0</div>
+              </div>
+              <div class="impact-item">
+                <div class="impact-timeframe">3 Years</div>
+                <div class="impact-amount" id="impact3years">$0</div>
+              </div>
+              <div class="impact-item">
+                <div class="impact-timeframe">5 Years</div>
+                <div class="impact-amount" id="impact5years">$0</div>
+              </div>
+            </div>
           </div>
 
-          <h4 class="mt">WHERE YOUR MONEY GOES</h4>
-          <div class="tablewrap">
-            <table>
+          <div class="table-section">
+            <h3>WHERE YOUR MONEY GOES</h3>
+            <table class="money-goes-table">
               <thead>
                 <tr>
                   <th>Category</th>
@@ -137,22 +175,36 @@
             </table>
           </div>
 
-          <div class="debtfree">
-            <div class="debtfree-k">Debt-free in</div>
-            <div class="debtfree-v" id="debtFreeDate">—</div>
-            <div class="debtfree-s">(<span id="monthsToPayoff">0.0</span> years)</div>
+          <div class="result-card">
+            <div class="result-label">Debt-free in</div>
+            <div class="result-value" id="debtFreeDate">—</div>
+            <div class="result-unit">(<span id="monthsToPayoff">0.0</span> years)</div>
           </div>
 
-          <div class="benefits">
-            <div class="bcard"><div class="btitle">INTEREST SAVED</div><div class="bval" id="interestSaved">$0</div></div>
-            <div class="bcard"><div class="btitle">TIME SAVED</div><div class="bval" id="timeSaved">0.0 years</div></div>
-            <div class="bcard"><div class="btitle">ACCOUNT GROWTH</div><div class="bval" id="investmentGrowth">$0</div><div class="bsub" id="investmentGrowthBreakdown">Investing: $0 • Savings: $0</div></div>
-            <div class="bcard"><div class="btitle">TOTAL IMPACT</div><div class="bval" id="totalImpact">$0</div></div>
+          <div class="result-card">
+            <div class="breakdown-grid">
+              <div class="breakdown-item">
+                <div class="breakdown-label">INTEREST SAVED</div>
+                <div class="breakdown-value" id="interestSaved">$0</div>
+              </div>
+              <div class="breakdown-item">
+                <div class="breakdown-label">TIME SAVED</div>
+                <div class="breakdown-value" id="timeSaved">0.0 years</div>
+              </div>
+              <div class="breakdown-item">
+                <div class="breakdown-label">ACCOUNT GROWTH</div>
+                <div class="breakdown-value" id="investmentGrowth">$0</div>
+                <div class="helper-text" id="investmentGrowthBreakdown" style="font-size: 0.85em; margin-top: 5px; color: white;">Investing: $0 • Savings: $0</div>
+              </div>
+              <div class="breakdown-item">
+                <div class="breakdown-label">TOTAL IMPACT</div>
+                <div class="breakdown-value" id="totalImpact">$0</div>
+              </div>
+            </div>
           </div>
-
-          <div class="footer-note">Local-only build. No network calls.</div>
         </div>
       </div>
+    </div>
     </div>
   </div>
 
