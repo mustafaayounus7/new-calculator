@@ -246,6 +246,117 @@
       </div>
     </div>
 
+    <!-- Interest Comparison Section -->
+    <div class="interest-comparison-section">
+      <div class="comparison-header">
+        <h2>Interest Comparison: Traditional vs Consolidation Loan</h2>
+        <p class="comparison-subtitle">See how compounding interest affects your total cost</p>
+      </div>
+      
+      <div class="comparison-grid">
+        <div class="comparison-card traditional">
+          <div class="comparison-card-header">
+            <h3>Traditional Credit Card Method</h3>
+            <span class="comparison-badge">Current Method</span>
+          </div>
+          <div class="comparison-content">
+            <div class="comparison-item">
+              <span class="comparison-label">Starting Balance</span>
+              <span class="comparison-value" id="traditionalBalance">$0</span>
+            </div>
+            <div class="comparison-item">
+              <span class="comparison-label">APR (Compounding Monthly)</span>
+              <span class="comparison-value" id="traditionalAPR">0%</span>
+            </div>
+            <div class="comparison-item">
+              <span class="comparison-label">Monthly Payment</span>
+              <span class="comparison-value" id="traditionalPayment">$0</span>
+            </div>
+            <div class="comparison-item highlight">
+              <span class="comparison-label">Total Interest Paid (Compounding)</span>
+              <span class="comparison-value large" id="traditionalTotalInterest">$0</span>
+            </div>
+            <div class="comparison-item">
+              <span class="comparison-label">Total Amount Paid</span>
+              <span class="comparison-value" id="traditionalTotalPaid">$0</span>
+            </div>
+            <div class="comparison-item">
+              <span class="comparison-label">Time to Pay Off</span>
+              <span class="comparison-value" id="traditionalTimeToPayoff">0 years</span>
+            </div>
+            <div class="compounding-note">
+              <span class="note-icon">ℹ️</span>
+              <span>Interest compounds monthly - each month's interest is added to the balance, increasing future interest charges.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="comparison-card consolidation">
+          <div class="comparison-card-header">
+            <h3>New Consolidation Loan Method</h3>
+            <span class="comparison-badge success">Recommended</span>
+          </div>
+          <div class="comparison-content">
+            <div class="comparison-item">
+              <span class="comparison-label">Starting Balance</span>
+              <span class="comparison-value" id="consolidationBalance">$0</span>
+            </div>
+            <div class="comparison-item">
+              <span class="comparison-label">APR (Compounding Monthly)</span>
+              <span class="comparison-value" id="consolidationAPR">0%</span>
+            </div>
+            <div class="comparison-item">
+              <span class="comparison-label">Monthly Payment (with Extra Principal)</span>
+              <span class="comparison-value" id="consolidationPayment">$0</span>
+            </div>
+            <div class="comparison-item highlight">
+              <span class="comparison-label">Total Interest Paid (Compounding)</span>
+              <span class="comparison-value large" id="consolidationTotalInterest">$0</span>
+            </div>
+            <div class="comparison-item">
+              <span class="comparison-label">Total Amount Paid</span>
+              <span class="comparison-value" id="consolidationTotalPaid">$0</span>
+            </div>
+            <div class="comparison-item">
+              <span class="comparison-label">Time to Pay Off</span>
+              <span class="comparison-value" id="consolidationTimeToPayoff">0 years</span>
+            </div>
+            <div class="compounding-note">
+              <span class="note-icon">ℹ️</span>
+              <span>Lower APR means less interest compounds over time, saving you money.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="savings-summary">
+        <div class="savings-card">
+          <div class="savings-icon">💰</div>
+          <div class="savings-content">
+            <div class="savings-label">Total Interest Saved</div>
+            <div class="savings-amount" id="interestComparisonSavings">$0</div>
+            <div class="savings-detail">From switching to consolidation loan with lower APR</div>
+          </div>
+        </div>
+        <div class="savings-card">
+          <div class="savings-icon">⏱️</div>
+          <div class="savings-content">
+            <div class="savings-label">Time Saved</div>
+            <div class="savings-amount" id="timeComparisonSavings">0.0 years</div>
+            <div class="savings-detail">Faster payoff with lower interest and extra principal</div>
+          </div>
+        </div>
+        <div class="savings-card highlight-savings">
+          <div class="savings-icon">📈</div>
+          <div class="savings-content">
+            <div class="savings-label">Compounding Impact</div>
+            <div class="savings-amount" id="compoundingImpact">Lower APR = Less Compound Interest</div>
+            <div class="savings-detail">By reducing the interest rate, less interest compounds monthly, creating exponential savings over time.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Charts Section -->
     <div class="charts-section">
       <div class="chart-container">

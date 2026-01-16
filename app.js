@@ -242,6 +242,20 @@ function calc() {
     newAPR,
     newTermYears
   });
+
+  // Update interest comparison section
+  updateInterestComparison({
+    totalDebt,
+    currentAPR,
+    currentPayment,
+    loanAmount,
+    newAPR,
+    base,
+    refi,
+    payoffMonths,
+    scheduled,
+    epMonthly
+  });
 }
 
 // Initialize charts
@@ -452,6 +466,105 @@ function updateCharts(data) {
   charts.debtPaydown.data.datasets[0].data = ccDebtData;
   charts.debtPaydown.data.datasets[1].data = newLoanData;
   charts.debtPaydown.update('none');
+}
+
+// Calculate traditional credit card interest with compounding (using current payment)
+function calculateTraditionalInterest(totalDebt, apr, monthlyPayment, maxMonths = 2000) {
+  if (monthlyPayment <= 0 || totalDebt <= 0) {
+    return { totalInterest: 0, totalPaid: totalDebt, months: 0 };
+  }
+
+  const monthlyRate = apr / 100 / 12;
+  let balance = totalDebt;
+  let totalInterest = 0;
+  let months = 0;
+
+  for (let m = 1; m <= maxMonths; m++) {
+    if (balance <= 0.01) break;
+
+    // Interest compounds monthly (added to balance each month)
+    const interest = balance * monthlyRate;
+    totalInterest += interest;
+    
+    // Apply payment
+    const principalPayment = Math.min(monthlyPayment - interest, balance);
+    
+    if (principalPayment <= 0 && monthlyRate > 0) {
+      // Payment doesn't cover interest - debt grows
+      return { totalInterest: Infinity, totalPaid: Infinity, months: Infinity };
+    }
+    
+    balance = Math.max(0, balance - principalPayment);
+    months = m;
+  }
+
+  const totalPaid = totalDebt + totalInterest;
+  return { totalInterest, totalPaid, months };
+}
+
+// Update interest comparison section
+function updateInterestComparison(data) {
+  // Calculate traditional method (using current payment)
+  const traditional = calculateTraditionalInterest(
+    data.totalDebt,
+    data.currentAPR,
+    data.currentPayment
+  );
+
+  // Consolidation loan calculations (already done in calc())
+  const consolidationTotalInterest = isFinite(data.refi.totalInterest) ? data.refi.totalInterest : 0;
+  const consolidationTotalPaid = data.loanAmount + consolidationTotalInterest;
+  const consolidationMonths = isFinite(data.refi.months) ? data.refi.months : 0;
+
+  // Update traditional method display
+  document.getElementById('traditionalBalance').textContent = fmt(data.totalDebt);
+  document.getElementById('traditionalAPR').textContent = data.currentAPR.toFixed(2) + '%';
+  document.getElementById('traditionalPayment').textContent = fmt(data.currentPayment);
+  
+  if (isFinite(traditional.totalInterest)) {
+    document.getElementById('traditionalTotalInterest').textContent = fmt(traditional.totalInterest);
+    document.getElementById('traditionalTotalPaid').textContent = fmt(traditional.totalPaid);
+  } else {
+    document.getElementById('traditionalTotalInterest').textContent = 'Never';
+    document.getElementById('traditionalTotalPaid').textContent = 'Never';
+  }
+  
+  if (isFinite(traditional.months)) {
+    const traditionalYears = (traditional.months / 12).toFixed(1);
+    document.getElementById('traditionalTimeToPayoff').textContent = traditionalYears + ' years';
+  } else {
+    document.getElementById('traditionalTimeToPayoff').textContent = 'Never';
+  }
+
+  // Update consolidation method display
+  document.getElementById('consolidationBalance').textContent = fmt(data.loanAmount);
+  document.getElementById('consolidationAPR').textContent = data.newAPR.toFixed(2) + '%';
+  const consolidationPayment = data.scheduled + data.epMonthly;
+  document.getElementById('consolidationPayment').textContent = fmt(consolidationPayment);
+  document.getElementById('consolidationTotalInterest').textContent = fmt(consolidationTotalInterest);
+  document.getElementById('consolidationTotalPaid').textContent = fmt(consolidationTotalPaid);
+  
+  const consolidationYears = (consolidationMonths / 12).toFixed(1);
+  document.getElementById('consolidationTimeToPayoff').textContent = consolidationYears + ' years';
+
+  // Calculate and display savings
+  const interestSaved = isFinite(traditional.totalInterest) 
+    ? Math.max(0, traditional.totalInterest - consolidationTotalInterest)
+    : 0;
+  
+  const timeSavedMonths = isFinite(traditional.months) 
+    ? Math.max(0, traditional.months - consolidationMonths)
+    : 0;
+  const timeSavedYears = (timeSavedMonths / 12).toFixed(1);
+
+  document.getElementById('interestComparisonSavings').textContent = fmt(interestSaved);
+  document.getElementById('timeComparisonSavings').textContent = timeSavedYears + ' years';
+
+  // Update compounding impact message
+  const compoundingMessage = data.currentAPR > data.newAPR
+    ? `Lower APR (${data.newAPR}% vs ${data.currentAPR}%) means less interest compounds monthly, saving you money.`
+    : 'Lower interest rate reduces compound interest accumulation over time.';
+  document.getElementById('compoundingImpact').textContent = compoundingMessage;
 }
 
 // Initialize when DOM and Chart.js are ready
