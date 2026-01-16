@@ -215,7 +215,8 @@ function calc() {
 
   // Bottom metrics
   document.getElementById('interestSaved').textContent = fmt(interestSavedTotal);
-  const timeSavedYears = ((isFinite(base.months) ? base.months : 0) - payoffMonths) / 12;
+  const monthsToPayoffYears = payoffMonths / 12;
+  const timeSavedYears = 50 - monthsToPayoffYears;
   document.getElementById('timeSaved').textContent = timeSavedYears.toFixed(1) + ' years';
 
   document.getElementById('investmentGrowth').textContent = fmt(accountGrowth);
