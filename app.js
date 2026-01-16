@@ -511,10 +511,22 @@ function updateInterestComparison(data) {
     data.currentPayment
   );
 
-  // Consolidation loan calculations (already done in calc())
-  const consolidationTotalInterest = isFinite(data.refi.totalInterest) ? data.refi.totalInterest : 0;
+  // Calculate consolidation loan with SAME monthly payment for fair comparison
+  // Use same payment amount but with lower APR
+  const consolidationMonthlyRate = data.newAPR / 100 / 12;
+  const consolidationComparison = amortizeMonths(
+    data.loanAmount,
+    consolidationMonthlyRate,
+    data.currentPayment
+  );
+  
+  const consolidationTotalInterest = isFinite(consolidationComparison.totalInterest) 
+    ? consolidationComparison.totalInterest 
+    : 0;
   const consolidationTotalPaid = data.loanAmount + consolidationTotalInterest;
-  const consolidationMonths = isFinite(data.refi.months) ? data.refi.months : 0;
+  const consolidationMonths = isFinite(consolidationComparison.months) 
+    ? consolidationComparison.months 
+    : 0;
 
   // Update traditional method display
   document.getElementById('traditionalBalance').textContent = fmt(data.totalDebt);
@@ -536,11 +548,10 @@ function updateInterestComparison(data) {
     document.getElementById('traditionalTimeToPayoff').textContent = 'Never';
   }
 
-  // Update consolidation method display
+  // Update consolidation method display (using SAME payment as traditional)
   document.getElementById('consolidationBalance').textContent = fmt(data.loanAmount);
   document.getElementById('consolidationAPR').textContent = data.newAPR.toFixed(2) + '%';
-  const consolidationPayment = data.scheduled + data.epMonthly;
-  document.getElementById('consolidationPayment').textContent = fmt(consolidationPayment);
+  document.getElementById('consolidationPayment').textContent = fmt(data.currentPayment);
   document.getElementById('consolidationTotalInterest').textContent = fmt(consolidationTotalInterest);
   document.getElementById('consolidationTotalPaid').textContent = fmt(consolidationTotalPaid);
   
