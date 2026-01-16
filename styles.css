@@ -577,6 +577,8 @@ body {
 
     .table-section {
         padding: 20px;
+        margin-top: 30px;
+        margin-bottom: 20px;
     }
 
     .input-panel,
@@ -631,6 +633,10 @@ body {
 
     .savings-card {
         padding: 20px;
+    }
+
+    .result-card {
+        padding: 10px;
     }
 }
 
