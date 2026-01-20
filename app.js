@@ -605,7 +605,7 @@ function updateInterestComparison(data) {
 
   // Update compounding impact message
   const compoundingMessage = data.currentAPR > data.newAPR
-    ? `Lower APR (${data.newAPR}% vs ${data.currentAPR}%) means less interest compounds monthly, saving you money.`
+    ? `Lower APR (${data.newAPR}% vs ${data.currentAPR}%) means less interest compounds daily, saving you money.`
     : 'Lower interest rate reduces compound interest accumulation over time.';
   document.getElementById('compoundingImpact').textContent = compoundingMessage;
 }
