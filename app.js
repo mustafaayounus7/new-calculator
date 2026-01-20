@@ -310,11 +310,22 @@ function initializeCharts() {
           legend: {
             display: true,
             position: 'bottom',
+            labels: {
+              font: {
+                size: window.innerWidth < 480 ? 11 : 12
+              },
+              padding: window.innerWidth < 480 ? 8 : 15
+            }
           },
         },
         scales: {
           x: {
             stacked: true,
+            ticks: {
+              font: {
+                size: window.innerWidth < 480 ? 10 : 12
+              }
+            }
           },
           y: {
             stacked: true,
@@ -322,6 +333,9 @@ function initializeCharts() {
             ticks: {
               callback: function (value) {
                 return '$' + value.toLocaleString();
+              },
+              font: {
+                size: window.innerWidth < 480 ? 10 : 12
               }
             }
           }
@@ -340,13 +354,13 @@ function initializeCharts() {
             label: 'Credit Card Debt',
             data: [0, 0, 0, 0, 0, 0, 0],
             backgroundColor: '#8b3534',
-            barThickness: 10,
+            barThickness: window.innerWidth < 480 ? 2 : 10,
           },
           {
             label: 'Debt Reorganization',
             data: [0, 0, 0, 0, 0, 0, 0],
             backgroundColor: '#cb746b',
-            barThickness: 10,
+            barThickness: window.innerWidth < 480 ? 2 : 10,
           }
         ]
       },
@@ -356,7 +370,13 @@ function initializeCharts() {
         plugins: {
           legend: {
             display: true,
-            position: 'bottom',
+            position:'bottom',
+            labels: {
+              font: {
+                size: window.innerWidth < 480 ? 11 : 12
+              },
+              padding: window.innerWidth < 480 ? 8 : 15
+            }
           },
         },
         scales: {
@@ -365,6 +385,16 @@ function initializeCharts() {
             ticks: {
               callback: function (value) {
                 return '$' + value.toLocaleString();
+              },
+              font: {
+                size: window.innerWidth < 480 ? 10 : 12
+              }
+            }
+          },
+          x: {
+            ticks: {
+              font: {
+                size: window.innerWidth < 480 ? 10 : 12
               }
             }
           }
