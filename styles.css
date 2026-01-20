@@ -34,6 +34,12 @@ body {
     font-weight: 700;
 }
 
+.header-content img {
+    width: 150px;
+    max-width: 100%;
+    height: auto;
+}
+
 .header-content p {
     font-size: 1.5em;
 }
@@ -45,7 +51,7 @@ body {
 
 .charts-section {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 30px;
     margin-top: 30px;
 }
@@ -576,7 +582,8 @@ body {
     }
 
     .table-section {
-        padding: 20px;
+        padding: 0px;
+        padding-top: 20px;
         margin-top: 30px;
         margin-bottom: 20px;
     }

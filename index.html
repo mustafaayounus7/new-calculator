@@ -4,14 +4,16 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Financial Freedom Calculator (Local)</title>
   <link rel="stylesheet" href="./styles.css" />
+  <link rel="icon" type="image/webp" href="./assets/favicon.webp">
+  <title>Rachel Talks Money - Finance Calculator</title>
 </head>
 
 <body>
   <div class="container">
     <div class="header">
       <div class="header-content">
+        <img src="./assets/logo.webp" alt="" srcset="">
         <h1>THE FINANCIAL FREEDOM CALCULATOR</h1>
       </div>
     </div>
@@ -48,7 +50,7 @@
           </div>
 
           <div class="form-section">
-            <div class="section-title">NEW CONSOLIDATION LOAN</div>
+            <div class="section-title">DEBT REORGANIZATION PROGRAM</div>
             <div class="form-group">
               <label>New Loan APR (%)</label>
               <input id="newAPR" type="number" value="12">
@@ -150,6 +152,10 @@
                   <div class="impact-timeframe">5 Years</div>
                   <div class="impact-amount" id="impact5years">$0</div>
                 </div>
+                <div class="impact-item">
+                  <div class="impact-timeframe">10 Years</div>
+                  <div class="impact-amount" id="impact10years">$0</div>
+                </div>
               </div>
             </div>
 
@@ -248,7 +254,7 @@
     <!-- Interest Comparison Section -->
     <div class="interest-comparison-section">
       <div class="comparison-header">
-        <h2>Interest Comparison: Traditional vs Consolidation Loan</h2>
+        <h2>Interest Comparison: Traditional vs Debt Reorganization Program</h2>
         <p class="comparison-subtitle">See how compounding interest affects your total cost</p>
       </div>
       
@@ -285,14 +291,14 @@
             </div>
             <div class="compounding-note">
               <span class="note-icon">ℹ️</span>
-              <span>Interest compounds monthly - each month's interest is added to the balance, increasing future interest charges.</span>
+              <span>Interest compounds daily - each month's interest is added to the balance, increasing future interest charges.</span>
             </div>
           </div>
         </div>
 
         <div class="comparison-card consolidation">
           <div class="comparison-card-header">
-            <h3>New Consolidation Loan Method</h3>
+            <h3>Debt Reorganization Method</h3>
             <span class="comparison-badge success">Recommended</span>
           </div>
           <div class="comparison-content">
@@ -334,7 +340,7 @@
           <div class="savings-content">
             <div class="savings-label">Total Interest Saved</div>
             <div class="savings-amount" id="interestComparisonSavings">$0</div>
-            <div class="savings-detail">From switching to consolidation loan with lower APR</div>
+            <div class="savings-detail">From switching to debt reorganization with lower APR</div>
           </div>
         </div>
         <div class="savings-card">
@@ -350,7 +356,7 @@
           <div class="savings-content">
             <div class="savings-label">Compounding Impact</div>
             <div class="savings-amount" id="compoundingImpact">Lower APR = Less Compound Interest</div>
-            <div class="savings-detail">By reducing the interest rate, less interest compounds monthly, creating exponential savings over time.</div>
+            <div class="savings-detail">By reducing the interest rate, less interest compounds daily, creating exponential savings over time.</div>
           </div>
         </div>
       </div>

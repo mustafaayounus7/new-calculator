@@ -171,6 +171,7 @@ function calc() {
     { m: 12, impactId: 'impact1year' },
     { m: 36, impactId: 'impact3years' },
     { m: 60, impactId: 'impact5years' },
+    { m: 120, impactId: 'impact10years' },
   ];
 
   function bucketFor(m) {
@@ -337,13 +338,13 @@ function initializeCharts() {
         datasets: [
           {
             label: 'Credit Card Debt',
-            data: [0, 0, 0, 0, 0, 0],
+            data: [0, 0, 0, 0, 0, 0, 0],
             backgroundColor: '#8b3534',
             barThickness: 10,
           },
           {
-            label: 'New Loan',
-            data: [0, 0, 0, 0, 0, 0],
+            label: 'Debt Reorganization',
+            data: [0, 0, 0, 0, 0, 0, 0],
             backgroundColor: '#cb746b',
             barThickness: 10,
           }
@@ -411,7 +412,7 @@ function updateCharts(data) {
   const maxYears = Math.max(
     Math.ceil((isFinite(data.base.months) ? data.base.months : 0) / 12), 
     Math.ceil(data.payoffMonths / 12),
-    5
+    40
   ) + 1;
   
   const debtPaydownLabels = [];
@@ -428,7 +429,7 @@ function updateCharts(data) {
   const loanExtraPrincipal = data.epMonthly;
   let loanRemaining = data.loanAmount;
 
-  for (let year = 0; year <= Math.min(maxYears, 5); year++) {
+  for (let year = 0; year <= Math.min(maxYears, 40); year++) {
     debtPaydownLabels.push(year === 0 ? '0' : `${year} Yr`);
     
     if (year === 0) {
